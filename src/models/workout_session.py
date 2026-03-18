@@ -1,0 +1,15 @@
+from sqlalchemy import Column, Integer, Float, Date, String, ForeignKey
+from src.database import Base
+
+class WorkoutSession(Base):
+    __tablename__ = "workout_sessions"
+
+    Session_ID = Column(Integer, primary_key=True, index=True)
+    User_ID = Column(Integer, ForeignKey("users.User_ID"))
+    Session_Date = Column(Date)
+    Session_MaxBpm = Column(Integer, nullable=True)
+    Session_AvgBpm = Column(Integer, nullable=True)
+    Session_RestingBpm = Column(Integer, nullable=True)
+    Session_Duration = Column(Integer, nullable=True)
+    Session_Type = Column(String, nullable=True)
+    User_Feedback_Score = Column(Integer, nullable=True)
