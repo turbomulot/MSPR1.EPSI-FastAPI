@@ -16,7 +16,10 @@ CurrentUser = Annotated[User, Depends(get_current_user)]
 
 @router.post("/", response_model=WorkoutSessionRead, status_code=201)
 def create_session(session: WorkoutSessionCreate, db: DB, current_user: CurrentUser):
-    db_session = WorkoutSession(**session.model_dump(), User_ID=current_user.User_ID)
+    db_session = WorkoutSession(
+        **session.model_dump(exclude={"User_ID"}),
+        User_ID=current_user.User_ID,
+    )
     db.add(db_session)
     db.commit()
     db.refresh(db_session)
@@ -47,8 +50,9 @@ def update_session(session_id: int, payload: WorkoutSessionCreate, db: DB, curre
     ).first()
     if not session:
         raise HTTPException(404, "Workout session not found")
-    for key, value in payload.model_dump().items():
+    for key, value in payload.model_dump(exclude={"User_ID"}).items():
         setattr(session, key, value)
+    session.User_ID = current_user.User_ID
     db.commit()
     db.refresh(session)
     return session

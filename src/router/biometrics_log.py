@@ -16,7 +16,10 @@ CurrentUser = Annotated[User, Depends(get_current_user)]
 
 @router.post("/", response_model=BiometricsLogRead, status_code=201)
 def create_biometrics_log(biometrics_log: BiometricsLogCreate, db: DB, current_user: CurrentUser):
-    db_log = BiometricsLog(**biometrics_log.model_dump(), User_ID=current_user.User_ID)
+    db_log = BiometricsLog(
+        **biometrics_log.model_dump(exclude={"User_ID"}),
+        User_ID=current_user.User_ID,
+    )
     db.add(db_log)
     db.commit()
     db.refresh(db_log)
@@ -47,8 +50,9 @@ def update_biometrics_log(log_id: int, payload: BiometricsLogCreate, db: DB, cur
     ).first()
     if not log:
         raise HTTPException(404, "Biometrics log not found")
-    for key, value in payload.model_dump().items():
+    for key, value in payload.model_dump(exclude={"User_ID"}).items():
         setattr(log, key, value)
+    log.User_ID = current_user.User_ID
     db.commit()
     db.refresh(log)
     return log

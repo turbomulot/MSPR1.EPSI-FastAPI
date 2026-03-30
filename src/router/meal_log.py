@@ -16,7 +16,10 @@ CurrentUser = Annotated[User, Depends(get_current_user)]
 
 @router.post("/", response_model=MealLogRead, status_code=201)
 def create_meal_log(meal_log: MealLogCreate, db: DB, current_user: CurrentUser):
-    db_log = MealLog(**meal_log.model_dump(), User_ID=current_user.User_ID)
+    db_log = MealLog(
+        **meal_log.model_dump(exclude={"User_ID"}),
+        User_ID=current_user.User_ID,
+    )
     db.add(db_log)
     db.commit()
     db.refresh(db_log)
@@ -47,8 +50,9 @@ def update_meal_log(log_id: int, payload: MealLogCreate, db: DB, current_user: C
     ).first()
     if not log:
         raise HTTPException(404, "Meal log not found")
-    for key, value in payload.model_dump().items():
+    for key, value in payload.model_dump(exclude={"User_ID"}).items():
         setattr(log, key, value)
+    log.User_ID = current_user.User_ID
     db.commit()
     db.refresh(log)
     return log

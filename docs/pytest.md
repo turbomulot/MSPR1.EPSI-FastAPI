@@ -37,6 +37,10 @@ Resultats:
 pytest src/test/test_user.py -v
 pytest src/test/test_product.py -v
 pytest src/test/test_analytics.py -v
+pytest src/test/test_equipment.py -v
+pytest src/test/test_meal_log.py -v
+pytest src/test/test_workout_session.py -v
+pytest src/test/test_biometrics_log.py -v
 ```
 
 ### Lancer un test unique
@@ -58,8 +62,15 @@ src/test/
 ├── test_app.py
 ├── test_user.py
 ├── test_product.py
-└── test_analytics.py
+├── test_analytics.py
+├── test_equipment.py
+├── test_meal_log.py
+├── test_workout_session.py
+└── test_biometrics_log.py
 ```
+
+Suite actuelle:
+- 57 tests passes
 
 ## Couverture fonctionnelle actuelle
 
@@ -83,6 +94,26 @@ src/test/
 - Endpoint analytics protege par JWT
 - Isolation des donnees par utilisateur
 - Cas sans donnees
+
+### test_equipment.py
+- CRUD equipements
+- Verifications d'authentification
+- Controle d'acces par utilisateur (ownership)
+
+### test_meal_log.py
+- CRUD meal logs
+- Verifications d'authentification
+- Isolation des donnees par utilisateur
+
+### test_workout_session.py
+- CRUD workout sessions
+- Verifications d'authentification
+- Isolation des donnees par utilisateur
+
+### test_biometrics_log.py
+- CRUD biometrics logs
+- Verifications d'authentification
+- Isolation des donnees par utilisateur
 
 ## Fixtures principales (conftest.py)
 - `db`: base SQLite de test
