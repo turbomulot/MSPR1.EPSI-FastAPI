@@ -41,6 +41,7 @@ pytest src/test/test_equipment.py -v
 pytest src/test/test_meal_log.py -v
 pytest src/test/test_workout_session.py -v
 pytest src/test/test_biometrics_log.py -v
+pytest src/test/test_exports.py -v
 ```
 
 ### Lancer un test unique
@@ -66,11 +67,12 @@ src/test/
 ├── test_equipment.py
 ├── test_meal_log.py
 ├── test_workout_session.py
-└── test_biometrics_log.py
+├── test_biometrics_log.py
+└── test_exports.py
 ```
 
 Suite actuelle:
-- 57 tests passes
+- 68 tests passes
 
 ## Couverture fonctionnelle actuelle
 
@@ -114,6 +116,11 @@ Suite actuelle:
 - CRUD biometrics logs
 - Verifications d'authentification
 - Isolation des donnees par utilisateur
+
+### test_exports.py
+- Endpoints d'export CSV
+- Controle d'acces admin uniquement
+- Validation du format CSV et des en-tetes HTTP
 
 ## Fixtures principales (conftest.py)
 - `db`: base SQLite de test

@@ -6,6 +6,7 @@ from src.database import engine, Base
 import src.models
 from src.router import (
     analytics,
+    exports,
     product,
     user,
     equipment,
@@ -25,6 +26,7 @@ app = FastAPI(lifespan=lifespan)
 
 api = APIRouter(prefix="/api/v0")
 api.include_router(analytics.router)
+api.include_router(exports.router)
 api.include_router(product.router)
 api.include_router(user.router)
 api.include_router(equipment.router)
