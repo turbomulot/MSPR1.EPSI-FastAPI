@@ -1,6 +1,10 @@
-from datetime import datetime
+from datetime import datetime, timezone
 from sqlalchemy import Column, Integer, Float, Date, ForeignKey, DateTime
 from src.database import Base
+
+
+def utc_now() -> datetime:
+    return datetime.now(timezone.utc)
 
 class BiometricsLog(Base):
     __tablename__ = "biometrics_logs"
@@ -11,5 +15,5 @@ class BiometricsLog(Base):
     Weight = Column(Float, nullable=True)
     Sleep_Hours = Column(Float, nullable=True)
     Heart_Rate = Column(Integer, nullable=True)
-    created_at = Column(DateTime, default=datetime.utcnow, nullable=False)
-    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow, nullable=False)
+    created_at = Column(DateTime, default=utc_now, nullable=False)
+    updated_at = Column(DateTime, default=utc_now, onupdate=utc_now, nullable=False)

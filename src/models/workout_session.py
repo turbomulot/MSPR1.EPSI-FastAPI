@@ -1,6 +1,10 @@
-from datetime import datetime
+from datetime import datetime, timezone
 from sqlalchemy import Column, Integer, Float, Date, String, ForeignKey, DateTime
 from src.database import Base
+
+
+def utc_now() -> datetime:
+    return datetime.now(timezone.utc)
 
 class WorkoutSession(Base):
     __tablename__ = "workout_sessions"
@@ -14,5 +18,5 @@ class WorkoutSession(Base):
     Session_Duration = Column(Integer, nullable=True)
     Session_Type = Column(String, nullable=True)
     User_Feedback_Score = Column(Integer, nullable=True)
-    created_at = Column(DateTime, default=datetime.utcnow, nullable=False)
-    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow, nullable=False)
+    created_at = Column(DateTime, default=utc_now, nullable=False)
+    updated_at = Column(DateTime, default=utc_now, onupdate=utc_now, nullable=False)

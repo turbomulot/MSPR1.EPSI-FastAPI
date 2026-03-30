@@ -51,7 +51,7 @@ class TestUserCreate:
                 "User_password": "securepassword123",
             },
         )
-        assert response.status_code == status.HTTP_422_UNPROCESSABLE_ENTITY
+        assert response.status_code == status.HTTP_422_UNPROCESSABLE_CONTENT
     
     def test_create_user_missing_password(self, client: TestClient):
         """Test creating user without password fails."""
@@ -61,7 +61,7 @@ class TestUserCreate:
                 "User_mail": "newuser@example.com",
             },
         )
-        assert response.status_code == status.HTTP_422_UNPROCESSABLE_ENTITY
+        assert response.status_code == status.HTTP_422_UNPROCESSABLE_CONTENT
 
 
 class TestUserLogin:

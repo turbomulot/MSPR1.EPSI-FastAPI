@@ -1,7 +1,11 @@
-from datetime import datetime
+from datetime import datetime, timezone
 from sqlalchemy import Column, Integer, String, Float, Table, ForeignKey, DateTime, Boolean
 from sqlalchemy.orm import relationship
 from src.database import Base
+
+
+def utc_now() -> datetime:
+    return datetime.now(timezone.utc)
 
 user_equipment_association = Table(
     'user_equipment',
@@ -17,8 +21,8 @@ class User(Base):
     User_mail = Column(String, unique=True, index=True)
     User_password = Column(String)
     isAdmin = Column(Boolean, default=False, nullable=False)
-    created_at = Column(DateTime, default=datetime.utcnow, nullable=False)
-    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow, nullable=False)
+    created_at = Column(DateTime, default=utc_now, nullable=False)
+    updated_at = Column(DateTime, default=utc_now, onupdate=utc_now, nullable=False)
     User_Subscription = Column(String, nullable=True)
     User_age = Column(Integer, nullable=True)
     User_weight = Column(Float, nullable=True)

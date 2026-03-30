@@ -1,6 +1,6 @@
 from datetime import date, datetime
 
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 
 
 # Authentication Schemas
@@ -36,9 +36,7 @@ class ProductRead(ProductBase):
     Product_ID: int
     created_at: datetime
     updated_at: datetime
-
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 class UserBase(BaseModel):
@@ -70,9 +68,7 @@ class UserRead(UserBase):
     isAdmin: bool
     created_at: datetime
     updated_at: datetime
-
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 class EquipmentBase(BaseModel):
@@ -89,9 +85,7 @@ class EquipmentRead(EquipmentBase):
     Equipment_ID: int
     created_at: datetime
     updated_at: datetime
-
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 class WorkoutSessionBase(BaseModel):
@@ -113,9 +107,7 @@ class WorkoutSessionRead(WorkoutSessionBase):
     Session_ID: int
     created_at: datetime
     updated_at: datetime
-
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 class MealLogBase(BaseModel):
@@ -132,9 +124,7 @@ class MealLogRead(MealLogBase):
     Log_ID: int
     created_at: datetime
     updated_at: datetime
-
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 class BiometricsLogBase(BaseModel):
@@ -153,9 +143,7 @@ class BiometricsLogRead(BiometricsLogBase):
     Log_ID: int
     created_at: datetime
     updated_at: datetime
-
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 class UserAnalyticsSummary(BaseModel):
