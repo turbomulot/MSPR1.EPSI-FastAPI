@@ -5,6 +5,7 @@
 Depuis la racine du projet:
 
 ```bash
+alembic upgrade head
 fastapi dev src/app.py
 ```
 

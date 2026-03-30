@@ -15,6 +15,7 @@ Ce projet expose une API REST securisee (JWT), des routes CRUD metier, un endpoi
 - [Documentation API](#documentation-api)
 - [Authentification](#authentification)
 - [Exports CSV (compliance MSPR)](#exports-csv-compliance-mspr)
+- [Migrations de base de donnees](#migrations-de-base-de-donnees)
 - [Tests](#tests)
 - [Deploiement Docker](#deploiement-docker)
 - [Points de securite et gouvernance](#points-de-securite-et-gouvernance)
@@ -95,6 +96,10 @@ ALGORITHM=HS256
 ACCESS_TOKEN_EXPIRE_MINUTES=30
 ```
 
+Note migration:
+- Alembic utilise la meme variable `DATABASE_URL` que l'application.
+- La base cible des migrations est donc PostgreSQL (ou toute URL definie dans `DATABASE_URL`).
+
 ## Lancement local
 
 1. Creer et activer un environnement virtuel.
@@ -148,6 +153,23 @@ Ces routes retournent:
 
 - `Content-Type: text/csv`
 - `Content-Disposition: attachment; filename="..."`
+
+## Migrations de base de donnees
+
+Le projet utilise Alembic pour versionner le schema.
+
+Commandes principales:
+
+```bash
+alembic upgrade head                 # Appliquer toutes les migrations
+alembic revision --autogenerate -m "message"   # Generer une nouvelle migration
+alembic downgrade -1                 # Revenir d'une migration
+```
+
+Important:
+- Le backend ne cree plus automatiquement les tables au demarrage.
+- Il faut executer `alembic upgrade head` avant de lancer l'API sur une base vide.
+- Alembic lit `DATABASE_URL` via la configuration applicative (`src/config.py`).
 
 ## Tests
 

@@ -1,8 +1,5 @@
-from contextlib import asynccontextmanager
-
 from fastapi import APIRouter, FastAPI
 
-from src.database import engine, Base
 import src.models
 from src.router import (
     analytics,
@@ -16,13 +13,7 @@ from src.router import (
 )
 
 
-@asynccontextmanager
-async def lifespan(app: FastAPI):
-    Base.metadata.create_all(bind=engine)
-    yield
-
-
-app = FastAPI(lifespan=lifespan)
+app = FastAPI()
 
 api = APIRouter(prefix="/api/v0")
 api.include_router(analytics.router)
