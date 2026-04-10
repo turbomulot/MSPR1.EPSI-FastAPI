@@ -424,7 +424,7 @@ Entree (JSON):
   "Session_AvgBpm": 145,
   "Session_RestingBpm": 60,
   "Session_Duration": 50,
-  "Session_Type": "Cardio",
+  "WorkoutType_ID": 1,
   "User_Feedback_Score": 8
 }
 ```

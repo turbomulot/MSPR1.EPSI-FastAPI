@@ -14,6 +14,7 @@ from src.models.meal_log import MealLog
 from src.models.product import Product
 from src.models.user import User
 from src.models.workout_session import WorkoutSession
+from src.models.workout_type import WorkoutType
 
 router = APIRouter(prefix="/exports", tags=["exports"])
 DB = Annotated[Session, Depends(get_db)]
@@ -205,11 +206,13 @@ def export_workout_sessions_csv(db: DB, current_user: CurrentUser):
             WorkoutSession.Session_AvgBpm,
             WorkoutSession.Session_RestingBpm,
             WorkoutSession.Session_Duration,
-            WorkoutSession.Session_Type,
+            WorkoutSession.WorkoutType_ID,
+            WorkoutType.WorkoutType_Name,
             WorkoutSession.User_Feedback_Score,
             WorkoutSession.created_at,
             WorkoutSession.updated_at,
         )
+        .outerjoin(WorkoutType, WorkoutType.WorkoutType_ID == WorkoutSession.WorkoutType_ID)
         .order_by(WorkoutSession.Session_ID.asc())
         .all()
     )
@@ -222,7 +225,8 @@ def export_workout_sessions_csv(db: DB, current_user: CurrentUser):
         "Session_AvgBpm",
         "Session_RestingBpm",
         "Session_Duration",
-        "Session_Type",
+        "WorkoutType_ID",
+        "WorkoutType_Name",
         "User_Feedback_Score",
         "created_at",
         "updated_at",
