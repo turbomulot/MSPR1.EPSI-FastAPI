@@ -10,7 +10,7 @@ router = APIRouter(prefix="/etl", tags=["etl"])
 @router.post("/upload")
 async def upload_csv(file: UploadFile = File(...)):
     if not file.filename.endswith('.csv'):
-        raise HTTPException(status_code=400, detail="Le fichier doit être un CSV")
+        raise HTTPException(status_code=400)
 
     content = await file.read()
     text = content.decode('utf-8', errors='ignore')
@@ -18,21 +18,17 @@ async def upload_csv(file: UploadFile = File(...)):
     headers = set(reader.fieldnames or [])
 
     queue_name = None
-    
     if "Food_Item" in headers and "Calories (kcal)" in headers:
         queue_name = "daily_food_queue"
     elif "Patient_ID" in headers and "Diet_Recommendation" in headers:
         queue_name = "diet_rec_queue"
     elif "Max_BPM" in headers and "Workout_Type" in headers:
         queue_name = "exercise_queue"
-    elif "WorkoutType_Name" in headers:
-        queue_name = "workout_type_queue"
     else:
-        raise HTTPException(status_code=400, detail="Format CSV non reconnu ou entêtes invalides")
+        raise HTTPException(status_code=400)
 
     connection = get_rabbitmq_connection()
     channel = connection.channel()
-    
     channel.queue_declare(queue=queue_name, durable=True)
 
     for row in reader:
