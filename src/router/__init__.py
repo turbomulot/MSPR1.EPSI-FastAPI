@@ -6,6 +6,7 @@ from . import (
     meal_log,
     product,
     user,
+    workout_type,
     workout_session,
 )
 
@@ -17,5 +18,6 @@ __all__ = [
     "meal_log",
     "product",
     "user",
+    "workout_type",
     "workout_session",
 ]

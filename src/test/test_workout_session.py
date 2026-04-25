@@ -8,13 +8,20 @@ from sqlalchemy.orm import Session
 
 from src.auth import create_access_token, hash_password
 from src.models.user import User
+from src.models.workout_type import WorkoutType
 from src.models.workout_session import WorkoutSession
 
 
 class TestWorkoutSessionEndpoints:
     """Tests for workout session CRUD and ownership rules."""
 
-    def test_create_workout_session_success(self, client: TestClient, test_user: User, user_token: str):
+    def test_create_workout_session_success(
+        self,
+        client: TestClient,
+        test_user: User,
+        user_token: str,
+        test_workout_type: WorkoutType,
+    ):
         headers = {"Authorization": f"Bearer {user_token}"}
         response = client.post(
             "/api/v0/workout-sessions/",
@@ -22,7 +29,7 @@ class TestWorkoutSessionEndpoints:
                 "User_ID": 99999,
                 "Session_Date": "2026-03-30",
                 "Session_Duration": 45,
-                "Session_Type": "cardio",
+                "WorkoutType_ID": test_workout_type.WorkoutType_ID,
             },
             headers=headers,
         )
@@ -39,7 +46,7 @@ class TestWorkoutSessionEndpoints:
                 "User_ID": 1,
                 "Session_Date": "2026-03-30",
                 "Session_Duration": 30,
-                "Session_Type": "strength",
+                "WorkoutType_ID": 1,
             },
         )
 
@@ -51,6 +58,7 @@ class TestWorkoutSessionEndpoints:
         db: Session,
         test_user: User,
         user_token: str,
+        test_workout_type: WorkoutType,
     ):
         other_user = User(
             User_mail="workout-other@example.com",
@@ -64,13 +72,13 @@ class TestWorkoutSessionEndpoints:
             User_ID=test_user.User_ID,
             Session_Date=date(2026, 3, 1),
             Session_Duration=35,
-            Session_Type="cardio",
+            WorkoutType_ID=test_workout_type.WorkoutType_ID,
         )
         other_session = WorkoutSession(
             User_ID=other_user.User_ID,
             Session_Date=date(2026, 3, 2),
             Session_Duration=60,
-            Session_Type="strength",
+            WorkoutType_ID=test_workout_type.WorkoutType_ID,
         )
         db.add_all([own_session, other_session])
         db.commit()
@@ -89,6 +97,7 @@ class TestWorkoutSessionEndpoints:
         db: Session,
         test_user: User,
         user_token: str,
+        test_workout_type: WorkoutType,
     ):
         other_user = User(
             User_mail="workout-owner@example.com",
@@ -103,7 +112,7 @@ class TestWorkoutSessionEndpoints:
             User_ID=other_user.User_ID,
             Session_Date=date(2026, 3, 7),
             Session_Duration=50,
-            Session_Type="mobility",
+            WorkoutType_ID=test_workout_type.WorkoutType_ID,
         )
         db.add(other_session)
         db.commit()
@@ -125,12 +134,13 @@ class TestWorkoutSessionEndpoints:
         db: Session,
         test_user: User,
         user_token: str,
+        test_workout_type: WorkoutType,
     ):
         session = WorkoutSession(
             User_ID=test_user.User_ID,
             Session_Date=date(2026, 3, 12),
             Session_Duration=40,
-            Session_Type="run",
+            WorkoutType_ID=test_workout_type.WorkoutType_ID,
         )
         db.add(session)
         db.commit()
@@ -144,7 +154,7 @@ class TestWorkoutSessionEndpoints:
                 "User_ID": test_user.User_ID,
                 "Session_Date": "2026-03-13",
                 "Session_Duration": 55,
-                "Session_Type": "cycling",
+                "WorkoutType_ID": test_workout_type.WorkoutType_ID,
             },
             headers=headers,
         )
