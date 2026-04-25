@@ -36,8 +36,4 @@ class ExerciseRow(BaseModel):
     Avg_BPM: int = Field(alias="Avg_BPM")
     Resting_BPM: int = Field(alias="Resting_BPM")
     Session_Duration: float = Field(alias="Session_Duration (hours)")
-    WorkoutType_ID: int = Field(alias="WorkoutType_ID")
-
-class WorkoutTypeRow(BaseModel):
-    model_config = ConfigDict(populate_by_name=True)
-    WorkoutType_Name: str = Field(alias="WorkoutType_Name")
+    Workout_Type: str = Field(alias="Workout_Type")

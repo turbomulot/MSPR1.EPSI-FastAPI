@@ -2,14 +2,12 @@ import multiprocessing
 from src.etl.consumers import daily_food_consumer
 from src.etl.consumers import diet_rec_consumer
 from src.etl.consumers import exercise_consumer
-from src.etl.consumers import workout_type_consumer
 
 def run_workers():
     processes = [
         multiprocessing.Process(target=daily_food_consumer.start),
         multiprocessing.Process(target=diet_rec_consumer.start),
-        multiprocessing.Process(target=exercise_consumer.start),
-        multiprocessing.Process(target=workout_type_consumer.start)
+        multiprocessing.Process(target=exercise_consumer.start)
     ]
 
     for p in processes:

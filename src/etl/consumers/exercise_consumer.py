@@ -32,7 +32,8 @@ def process_message(ch, method, properties, body):
             User_Height=row.Height
         )
         db.add(user)
-        db.flush()
+        db.commit()
+        db.refresh(user)
 
         duration_minutes = int(row.Session_Duration * 60)
         today = datetime.now(timezone.utc).date()
@@ -44,7 +45,7 @@ def process_message(ch, method, properties, body):
             Session_AvgBpm=row.Avg_BPM,
             Session_RestingBpm=row.Resting_BPM,
             Session_Duration=duration_minutes,
-            WorkoutType_ID=row.WorkoutType_ID
+            Session_Type=row.Workout_Type
         )
         db.add(session)
 
