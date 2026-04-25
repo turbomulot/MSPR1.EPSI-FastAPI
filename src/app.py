@@ -7,9 +7,11 @@ from src.router import (
     product,
     user,
     equipment,
+    workout_type,
     workout_session,
     meal_log,
     biometrics_log,
+    etl
 )
 
 
@@ -21,8 +23,10 @@ api.include_router(exports.router)
 api.include_router(product.router)
 api.include_router(user.router)
 api.include_router(equipment.router)
+api.include_router(workout_type.router)
 api.include_router(workout_session.router)
 api.include_router(meal_log.router)
 api.include_router(biometrics_log.router)
+api.include_router(etl.router)
 
 app.include_router(api)
